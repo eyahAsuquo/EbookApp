@@ -17,34 +17,9 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
 
-  final List<Map<String, dynamic>> _slides = [
-    {
-      'icon': Icons.auto_stories_rounded,
-      'tag': 'Offline Reading',
-      'title': 'Immersive Offline Reading',
-      'description':
-          'Enjoy rich stories without interruptions or internet connectivity. Customize fonts, spacing, and eye-friendly sepia and dark themes.',
-    },
-    {
-      'icon': Icons.touch_app_rounded,
-      'tag': 'Instant Lookup',
-      'title': 'Tap-to-Define Inbuilt Dictionary',
-      'description':
-          'No more context switching between dictionary apps. Simply tap any word inside the ebook for instant phonetics, meanings, and examples.',
-    },
-    {
-      'icon': Icons.offline_bolt_rounded,
-      'tag': 'Zero Latency',
-      'title': 'Local Engine & Vocabulary Bookmarks',
-      'description':
-          'The entire dictionary is indexed directly inside your phone. Bookmark intriguing words to build your personal offline vocabulary list.',
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
-    // Start background SQLite extraction and database seeding immediately
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<OnboardingController>().startBackgroundSync();
     });
@@ -59,8 +34,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _finishOnboarding(BuildContext context) async {
     final controller = context.read<OnboardingController>();
 
-    // If still seeding, wait briefly or show progress
-    if (!controller.isSyncComplete && controller.syncProgress < 0.95) {
+    if (!controller.canProceedToApp) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Finalizing offline dictionary database... Just a moment!'),
@@ -88,13 +62,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         actions: [
           Consumer<OnboardingController>(
             builder: (context, controller, child) {
-              if (controller.currentPage == _slides.length - 1) {
+              if (controller.isLastPage) {
                 return const SizedBox.shrink();
               }
               return TextButton(
                 onPressed: () {
+                  final lastIndex = controller.totalSlides - 1;
+                  controller.setPage(lastIndex);
                   _pageController.animateToPage(
-                    _slides.length - 1,
+                    lastIndex,
                     duration: const Duration(milliseconds: 350),
                     curve: Curves.easeInOut,
                   );
@@ -114,36 +90,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Slide Carousel
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: _slides.length,
-                onPageChanged: (index) {
-                  context.read<OnboardingController>().setPage(index);
-                },
-                itemBuilder: (context, index) {
-                  final slide = _slides[index];
-                  return OnboardingCard(
-                    icon: slide['icon'] as IconData,
-                    tag: slide['tag'] as String,
-                    title: slide['title'] as String,
-                    description: slide['description'] as String,
-                  );
-                },
-              ),
-            ),
+        child: Consumer<OnboardingController>(
+          builder: (context, controller, child) {
+            final slides = controller.slides;
 
-            // Bottom Section: Background Sync Status & Navigation
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Consumer<OnboardingController>(
-                builder: (context, controller, child) {
-                  final isLast = controller.currentPage == _slides.length - 1;
+            return Column(
+              children: [
+                // Slide Carousel
+                Expanded(
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: slides.length,
+                    onPageChanged: (index) {
+                      controller.setPage(index);
+                    },
+                    itemBuilder: (context, index) {
+                      final slide = slides[index];
+                      return OnboardingCard(
+                        icon: slide.icon,
+                        tag: slide.tag,
+                        title: slide.title,
+                        description: slide.description,
+                      );
+                    },
+                  ),
+                ),
 
-                  return Column(
+                // Bottom Section: Background Sync Status & Navigation
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Active background sync progress widget
@@ -157,7 +133,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       // Dots Indicator
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(_slides.length, (i) {
+                        children: List.generate(slides.length, (i) {
                           final isActive = controller.currentPage == i;
                           return AnimatedContainer(
                             duration: const Duration(milliseconds: 300),
@@ -175,14 +151,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                       // Next or Get Started Button
                       PepperButton(
-                        label: isLast ? 'Get Started' : 'Next',
-                        icon: isLast ? Icons.arrow_forward_rounded : null,
+                        label: controller.isLastPage ? 'Get Started' : 'Next',
+                        icon: controller.isLastPage ? Icons.arrow_forward_rounded : null,
                         width: double.infinity,
-                        isLoading: isLast && !controller.isSyncComplete && controller.syncProgress < 0.2,
+                        isLoading: controller.isLastPage && !controller.canProceedToApp,
                         onPressed: () {
-                          if (isLast) {
+                          if (controller.isLastPage) {
                             _finishOnboarding(context);
                           } else {
+                            final nextIndex = controller.currentPage + 1;
+                            controller.setPage(nextIndex);
                             _pageController.nextPage(
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeInOut,
@@ -191,14 +169,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         },
                       ),
                     ],
-                  );
-                },
-              ),
-            ),
-          ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 }
-

@@ -14,10 +14,7 @@ class BookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color coverColor = AppColors.pepperRed;
-    try {
-      coverColor = Color(int.parse(book.coverColorHex));
-    } catch (_) {}
+    final coverColor = book.coverColor;
 
     return Card(
       elevation: 2,

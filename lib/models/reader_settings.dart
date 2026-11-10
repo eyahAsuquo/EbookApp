@@ -1,13 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:ebook_app/core/constants/app_colors.dart';
+
 enum ReaderThemeMode {
   light,
   sepia,
-  dark,
+  dark;
+
+  Color get backgroundColor {
+    switch (this) {
+      case ReaderThemeMode.light:
+        return AppColors.readerLightBg;
+      case ReaderThemeMode.sepia:
+        return AppColors.readerSepiaBg;
+      case ReaderThemeMode.dark:
+        return AppColors.readerDarkBg;
+    }
+  }
+
+  Color get textColor {
+    switch (this) {
+      case ReaderThemeMode.light:
+        return AppColors.readerLightText;
+      case ReaderThemeMode.sepia:
+        return AppColors.readerSepiaText;
+      case ReaderThemeMode.dark:
+        return AppColors.readerDarkText;
+    }
+  }
 }
 
 enum ReaderFontFamily {
   serif,
   sansSerif,
-  monospace,
+  monospace;
+
+  String get familyName {
+    switch (this) {
+      case ReaderFontFamily.serif:
+        return 'serif';
+      case ReaderFontFamily.sansSerif:
+        return 'sans-serif';
+      case ReaderFontFamily.monospace:
+        return 'monospace';
+    }
+  }
 }
 
 class ReaderSettings {
@@ -22,6 +58,18 @@ class ReaderSettings {
     this.fontFamily = ReaderFontFamily.serif,
     this.lineHeight = 1.65,
   });
+
+  Color get backgroundColor => themeMode.backgroundColor;
+  Color get textColor => themeMode.textColor;
+  String get fontFamilyName => fontFamily.familyName;
+
+  TextStyle get bodyTextStyle => TextStyle(
+        fontSize: fontSize,
+        height: lineHeight,
+        color: textColor,
+        fontFamily: fontFamilyName,
+        letterSpacing: 0.15,
+      );
 
   ReaderSettings copyWith({
     double? fontSize,
@@ -55,4 +103,3 @@ class ReaderSettings {
     );
   }
 }
-

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:ebook_app/controllers/dictionary_controller.dart';
+import 'package:ebook_app/controllers/flashcard_controller.dart';
 import 'package:ebook_app/controllers/library_controller.dart';
 import 'package:ebook_app/controllers/onboarding_controller.dart';
 import 'package:ebook_app/controllers/reader_controller.dart';
@@ -112,6 +113,7 @@ void main() {
         MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => DictionaryController()),
+            ChangeNotifierProvider(create: (_) => FlashcardController()),
           ],
           child: const MaterialApp(
             home: VocabularyStudyScreen(),

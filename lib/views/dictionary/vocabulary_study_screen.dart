@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ebook_app/controllers/dictionary_controller.dart';
+import 'package:ebook_app/controllers/flashcard_controller.dart';
 import 'package:ebook_app/core/constants/app_colors.dart';
 import 'package:ebook_app/models/word_definition.dart';
 import 'package:ebook_app/views/common_widgets/pepper_button.dart';
@@ -18,19 +19,22 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animController;
   late Animation<double> _animation;
-  int _currentIndex = 0;
-  bool _isFlipped = false;
 
   @override
   void initState() {
     super.initState();
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 380),
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeInOut),
     );
+
+    // Reset flashcard state upon opening screen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<FlashcardController>().reset();
+    });
   }
 
   @override
@@ -39,34 +43,11 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
     super.dispose();
   }
 
-  void _flipCard() {
-    if (_isFlipped) {
-      _animController.reverse();
-    } else {
+  void _syncAnimationWithState(bool isFlipped) {
+    if (isFlipped) {
       _animController.forward();
-    }
-    setState(() {
-      _isFlipped = !_isFlipped;
-    });
-  }
-
-  void _nextCard(int total) {
-    if (_currentIndex + 1 < total) {
-      _animController.reset();
-      setState(() {
-        _isFlipped = false;
-        _currentIndex++;
-      });
-    }
-  }
-
-  void _prevCard() {
-    if (_currentIndex > 0) {
-      _animController.reset();
-      setState(() {
-        _isFlipped = false;
-        _currentIndex--;
-      });
+    } else {
+      _animController.reverse();
     }
   }
 
@@ -77,9 +58,9 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
         title: const Text('Vocabulary Flashcards'),
         centerTitle: true,
       ),
-      body: Consumer<DictionaryController>(
-        builder: (context, controller, child) {
-          final words = controller.bookmarkedWords;
+      body: Consumer2<DictionaryController, FlashcardController>(
+        builder: (context, dictController, flashcardController, child) {
+          final words = dictController.bookmarkedWords;
 
           if (words.isEmpty) {
             return Center(
@@ -123,7 +104,11 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
             );
           }
 
-          final currentWord = words[_currentIndex];
+          final currentIndex = flashcardController.currentIndex.clamp(0, words.length - 1);
+          final currentWord = words[currentIndex];
+
+          // Synchronize visual animation with controller state
+          _syncAnimationWithState(flashcardController.isFlipped);
 
           return SafeArea(
             child: Padding(
@@ -135,7 +120,7 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Card ${_currentIndex + 1} of ${words.length}',
+                        'Card ${currentIndex + 1} of ${words.length}',
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
@@ -163,7 +148,7 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
                   ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: LinearProgressIndicator(
-                      value: (_currentIndex + 1) / words.length,
+                      value: (currentIndex + 1) / words.length,
                       minHeight: 6,
                       backgroundColor: AppColors.divider,
                       valueColor: const AlwaysStoppedAnimation<Color>(AppColors.pepperRed),
@@ -174,7 +159,7 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
                   // 3D Flip Flashcard
                   Expanded(
                     child: GestureDetector(
-                      onTap: _flipCard,
+                      onTap: () => flashcardController.flip(),
                       child: AnimatedBuilder(
                         animation: _animation,
                         builder: (context, child) {
@@ -211,7 +196,9 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
                           foregroundColor: AppColors.textPrimary,
                         ),
                         icon: const Icon(Icons.arrow_back_rounded),
-                        onPressed: _currentIndex > 0 ? _prevCard : null,
+                        onPressed: currentIndex > 0
+                            ? () => flashcardController.prevCard()
+                            : null,
                       ),
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
@@ -224,8 +211,8 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         ),
                         icon: const Icon(Icons.flip_rounded, size: 18),
-                        label: Text(_isFlipped ? 'Show Word' : 'Show Meaning'),
-                        onPressed: _flipCard,
+                        label: Text(flashcardController.isFlipped ? 'Show Word' : 'Show Meaning'),
+                        onPressed: () => flashcardController.flip(),
                       ),
                       IconButton.filledTonal(
                         style: IconButton.styleFrom(
@@ -233,8 +220,8 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
                           foregroundColor: Colors.white,
                         ),
                         icon: const Icon(Icons.arrow_forward_rounded),
-                        onPressed: _currentIndex + 1 < words.length
-                            ? () => _nextCard(words.length)
+                        onPressed: currentIndex + 1 < words.length
+                            ? () => flashcardController.nextCard(words.length)
                             : null,
                       ),
                     ],
@@ -380,4 +367,3 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
     );
   }
 }
-

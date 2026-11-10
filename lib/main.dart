@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:ebook_app/controllers/dictionary_controller.dart';
+import 'package:ebook_app/controllers/flashcard_controller.dart';
 import 'package:ebook_app/controllers/library_controller.dart';
 import 'package:ebook_app/controllers/onboarding_controller.dart';
 import 'package:ebook_app/controllers/reader_controller.dart';
@@ -34,6 +35,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => LibraryController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FlashcardController(),
         ),
       ],
       child: const EbookReaderApp(),

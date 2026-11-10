@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:ebook_app/core/constants/app_colors.dart';
 import 'package:ebook_app/models/chapter.dart';
 
 class Book {
@@ -21,6 +23,14 @@ class Book {
     this.category = 'Classic Literature',
   });
 
+  Color get coverColor {
+    try {
+      return Color(int.parse(coverColorHex));
+    } catch (_) {
+      return AppColors.pepperRed;
+    }
+  }
+
   Book copyWith({
     String? id,
     String? title,
@@ -43,4 +53,3 @@ class Book {
     );
   }
 }
-

@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ebook_app/controllers/dictionary_controller.dart';
-import 'package:ebook_app/core/constants/app_colors.dart';
 import 'package:ebook_app/models/reader_settings.dart';
 import 'package:ebook_app/views/dictionary/dictionary_bottom_sheet.dart';
 
@@ -32,49 +31,8 @@ class _ReaderTextViewState extends State<ReaderTextView> {
     super.dispose();
   }
 
-  TextStyle _getTextStyle() {
-    Color textColor;
-    switch (widget.settings.themeMode) {
-      case ReaderThemeMode.light:
-        textColor = AppColors.readerLightText;
-        break;
-      case ReaderThemeMode.sepia:
-        textColor = AppColors.readerSepiaText;
-        break;
-      case ReaderThemeMode.dark:
-        textColor = AppColors.readerDarkText;
-        break;
-    }
-
-    String? fontFamily;
-    switch (widget.settings.fontFamily) {
-      case ReaderFontFamily.serif:
-        fontFamily = 'serif';
-        break;
-      case ReaderFontFamily.sansSerif:
-        fontFamily = 'sans-serif';
-        break;
-      case ReaderFontFamily.monospace:
-        fontFamily = 'monospace';
-        break;
-    }
-
-    return TextStyle(
-      fontSize: widget.settings.fontSize,
-      height: widget.settings.lineHeight,
-      color: textColor,
-      fontFamily: fontFamily,
-      letterSpacing: 0.15,
-    );
-  }
-
   void _onWordTapped(BuildContext context, String rawWord) async {
-    final cleanWord = rawWord.trim().replaceAll(RegExp(r'[^\w\s-]'), '');
-    if (cleanWord.isEmpty) return;
-
-    final dictController = context.read<DictionaryController>();
-    final definition = await dictController.lookupWord(cleanWord);
-
+    final definition = await context.read<DictionaryController>().lookupWord(rawWord);
     if (definition != null && context.mounted) {
       DictionaryBottomSheet.show(context, definition);
     }
@@ -88,7 +46,7 @@ class _ReaderTextViewState extends State<ReaderTextView> {
     }
     _recognizers.clear();
 
-    final baseStyle = _getTextStyle();
+    final baseStyle = widget.settings.bodyTextStyle;
     final paragraphs = widget.content.split('\n\n');
 
     return Column(
@@ -129,4 +87,3 @@ class _ReaderTextViewState extends State<ReaderTextView> {
     );
   }
 }
-

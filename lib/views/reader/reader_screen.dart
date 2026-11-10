@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ebook_app/controllers/reader_controller.dart';
 import 'package:ebook_app/core/constants/app_colors.dart';
-import 'package:ebook_app/models/reader_settings.dart';
 import 'package:ebook_app/views/dictionary/dictionary_search_screen.dart';
 import 'package:ebook_app/views/reader/widgets/reader_settings_sheet.dart';
 import 'package:ebook_app/views/reader/widgets/reader_text_view.dart';
@@ -31,28 +30,6 @@ class _ReaderScreenState extends State<ReaderScreen> {
     super.dispose();
   }
 
-  Color _getBackgroundColor(ReaderThemeMode mode) {
-    switch (mode) {
-      case ReaderThemeMode.light:
-        return AppColors.readerLightBg;
-      case ReaderThemeMode.sepia:
-        return AppColors.readerSepiaBg;
-      case ReaderThemeMode.dark:
-        return AppColors.readerDarkBg;
-    }
-  }
-
-  Color _getForegroundColor(ReaderThemeMode mode) {
-    switch (mode) {
-      case ReaderThemeMode.light:
-        return AppColors.readerLightText;
-      case ReaderThemeMode.sepia:
-        return AppColors.readerSepiaText;
-      case ReaderThemeMode.dark:
-        return AppColors.readerDarkText;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<ReaderController>(
@@ -69,8 +46,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
           );
         }
 
-        final bg = _getBackgroundColor(settings.themeMode);
-        final fg = _getForegroundColor(settings.themeMode);
+        final bg = settings.backgroundColor;
+        final fg = settings.textColor;
 
         return Scaffold(
           backgroundColor: bg,
