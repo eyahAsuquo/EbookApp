@@ -1,0 +1,881 @@
+[
+  {
+    "word": "curious",
+    "phonetic": "/\u02c8kj\u028a\u0259.ri.\u0259s/",
+    "part_of_speech": "adjective",
+    "definition": "Eager to know or learn something; inquisitive, or strange and unusual.",
+    "example": "'Curiouser and curiouser!' cried Alice in astonishment.",
+    "synonyms": [
+      "inquisitive",
+      "intrigued",
+      "peculiar",
+      "unusual"
+    ]
+  },
+  {
+    "word": "wonderland",
+    "phonetic": "/\u02c8w\u028cn.d\u0259.l\u00e6nd/",
+    "part_of_speech": "noun",
+    "definition": "A land or place full of wonderful things or marvels; an enchanted realm.",
+    "example": "She dreamt of a wonderland filled with talking animals and playing cards.",
+    "synonyms": [
+      "paradise",
+      "utopia",
+      "fairyland",
+      "enchantment"
+    ]
+  },
+  {
+    "word": "detective",
+    "phonetic": "/d\u026a\u02c8tek.t\u026av/",
+    "part_of_speech": "noun",
+    "definition": "A person whose occupation is to investigate and solve crimes or gather information.",
+    "example": "Sherlock Holmes is recognized as the world's most famous consulting detective.",
+    "synonyms": [
+      "investigator",
+      "sleuth",
+      "inspector"
+    ]
+  },
+  {
+    "word": "deduction",
+    "phonetic": "/d\u026a\u02c8d\u028ck.\u0283\u0259n/",
+    "part_of_speech": "noun",
+    "definition": "The inference of particular instances by reference to a general law or principle; reasoning from the general to the specific.",
+    "example": "By simple deduction from the mud on his boots, he deduced the traveler's path.",
+    "synonyms": [
+      "reasoning",
+      "inference",
+      "conclusion",
+      "logic"
+    ]
+  },
+  {
+    "word": "adventure",
+    "phonetic": "/\u0259d\u02c8ven.t\u0283\u0259r/",
+    "part_of_speech": "noun",
+    "definition": "An unusual and exciting, typically hazardous, experience or activity.",
+    "example": "Every book opened a gateway to a daring new adventure.",
+    "synonyms": [
+      "exploit",
+      "journey",
+      "expedition",
+      "venture"
+    ]
+  },
+  {
+    "word": "serendipity",
+    "phonetic": "/\u02ccser.\u0259n\u02c8d\u026ap.\u0259.ti/",
+    "part_of_speech": "noun",
+    "definition": "The occurrence and development of events by chance in a happy or beneficial way.",
+    "example": "Finding the rare antique manuscript in the cellar was pure serendipity.",
+    "synonyms": [
+      "chance",
+      "fortune",
+      "fluke",
+      "luck"
+    ]
+  },
+  {
+    "word": "epiphany",
+    "phonetic": "/\u026a\u02c8p\u026af.\u0259n.i/",
+    "part_of_speech": "noun",
+    "definition": "A moment of sudden and profound revelation or insight.",
+    "example": "While strolling through the quiet library, she had a sudden epiphany.",
+    "synonyms": [
+      "revelation",
+      "realization",
+      "insight",
+      "illumination"
+    ]
+  },
+  {
+    "word": "melancholy",
+    "phonetic": "/\u02c8mel.\u0259\u014b.k\u0252l.i/",
+    "part_of_speech": "noun",
+    "definition": "A feeling of pensive sadness, typically with no obvious cause.",
+    "example": "A gentle melancholy settled over the room as twilight deepened.",
+    "synonyms": [
+      "sadness",
+      "sorrow",
+      "wistfulness",
+      "despondency"
+    ]
+  },
+  {
+    "word": "resilient",
+    "phonetic": "/r\u026a\u02c8z\u026al.j\u0259nt/",
+    "part_of_speech": "adjective",
+    "definition": "Able to withstand or recover quickly from difficult conditions.",
+    "example": "She remained remarkably resilient despite facing countless obstacles.",
+    "synonyms": [
+      "tough",
+      "strong",
+      "tenacious",
+      "adaptable"
+    ]
+  },
+  {
+    "word": "eloquent",
+    "phonetic": "/\u02c8el.\u0259.kw\u0259nt/",
+    "part_of_speech": "adjective",
+    "definition": "Fluent or persuasive in speaking or writing.",
+    "example": "The author gave an eloquent defense of artistic expression.",
+    "synonyms": [
+      "articulate",
+      "expressive",
+      "fluent",
+      "persuasive"
+    ]
+  },
+  {
+    "word": "ubiquitous",
+    "phonetic": "/ju\u02d0\u02c8b\u026ak.w\u026a.t\u0259s/",
+    "part_of_speech": "adjective",
+    "definition": "Present, appearing, or found everywhere at the same time.",
+    "example": "In modern cities, smartphones have become completely ubiquitous.",
+    "synonyms": [
+      "omnipresent",
+      "everywhere",
+      "pervasive",
+      "universal"
+    ]
+  },
+  {
+    "word": "solitude",
+    "phonetic": "/\u02c8s\u0252l.\u026a.t\u0283u\u02d0d/",
+    "part_of_speech": "noun",
+    "definition": "The state or situation of being alone, especially when peaceful and pleasant.",
+    "example": "He cherished the quiet solitude of early morning reading sessions.",
+    "synonyms": [
+      "seclusion",
+      "isolation",
+      "peace",
+      "privacy"
+    ]
+  },
+  {
+    "word": "labyrinth",
+    "phonetic": "/\u02c8l\u00e6b.\u0259.r\u026an\u03b8/",
+    "part_of_speech": "noun",
+    "definition": "A complicated irregular network of passages or paths in which it is difficult to find one's way; a maze.",
+    "example": "The old castle's library was a veritable labyrinth of towering bookshelves.",
+    "synonyms": [
+      "maze",
+      "warren",
+      "network",
+      "complex"
+    ]
+  },
+  {
+    "word": "paradox",
+    "phonetic": "/\u02c8p\u00e6r.\u0259.d\u0252ks/",
+    "part_of_speech": "noun",
+    "definition": "A seemingly absurd or self-contradictory statement or proposition that when investigated may prove to be well founded or true.",
+    "example": "It is a curious paradox that the more we learn, the more we realize how little we know.",
+    "synonyms": [
+      "contradiction",
+      "enigma",
+      "incongruity",
+      "puzzle"
+    ]
+  },
+  {
+    "word": "ephemeral",
+    "phonetic": "/\u026a\u02c8fem.\u0259r.\u0259l/",
+    "part_of_speech": "adjective",
+    "definition": "Lasting for a very short time; transitory.",
+    "example": "Fame can be fickle and ephemeral, but written literature endures.",
+    "synonyms": [
+      "fleeting",
+      "transient",
+      "momentary",
+      "brief"
+    ]
+  },
+  {
+    "word": "petrichor",
+    "phonetic": "/\u02c8pet.r\u026a.k\u0254\u02d0r/",
+    "part_of_speech": "noun",
+    "definition": "A pleasant smell that frequently accompanies the first rain after a long period of warm, dry weather.",
+    "example": "The cool breeze carried the earthy petrichor through the open window.",
+    "synonyms": [
+      "earthiness",
+      "rain-scent"
+    ]
+  },
+  {
+    "word": "tenacity",
+    "phonetic": "/t\u0259\u02c8n\u00e6s.\u0259.ti/",
+    "part_of_speech": "noun",
+    "definition": "The quality or fact of being able to grip something firmly; determination.",
+    "example": "His sheer tenacity drove him to solve the mystery against all odds.",
+    "synonyms": [
+      "persistence",
+      "determination",
+      "resolve",
+      "grit"
+    ]
+  },
+  {
+    "word": "fathom",
+    "phonetic": "/\u02c8f\u00e6\u00f0.\u0259m/",
+    "part_of_speech": "verb",
+    "definition": "Understand a difficult problem or an enigmatic person after much thought.",
+    "example": "I could not fathom why the stranger had vanished into the foggy night.",
+    "synonyms": [
+      "comprehend",
+      "understand",
+      "grasp",
+      "decipher"
+    ]
+  },
+  {
+    "word": "luminous",
+    "phonetic": "/\u02c8lu\u02d0.m\u026a.n\u0259s/",
+    "part_of_speech": "adjective",
+    "definition": "Emitting or reflecting light, glowing; or very clear and brightly vivid.",
+    "example": "The stars cast a luminous sheen over the calm surface of the lake.",
+    "synonyms": [
+      "radiant",
+      "glowing",
+      "shining",
+      "brilliant"
+    ]
+  },
+  {
+    "word": "benevolent",
+    "phonetic": "/b\u0259\u02c8nev.\u0259l.\u0259nt/",
+    "part_of_speech": "adjective",
+    "definition": "Well meaning and kindly; serving a charitable rather than a profit-making purpose.",
+    "example": "The benevolent elder smiled and handed the hungry orphan a warm loaf of bread.",
+    "synonyms": [
+      "kind",
+      "generous",
+      "altruistic",
+      "compassionate"
+    ]
+  },
+  {
+    "word": "quandary",
+    "phonetic": "/\u02c8kw\u0252n.dri/",
+    "part_of_speech": "noun",
+    "definition": "A state of perplexity or uncertainty over what to do in a difficult situation.",
+    "example": "The detective was in a quandary regarding which suspect to question first.",
+    "synonyms": [
+      "dilemma",
+      "predicament",
+      "plight",
+      "conundrum"
+    ]
+  },
+  {
+    "word": "nostalgia",
+    "phonetic": "/n\u0252s\u02c8t\u00e6l.d\u0292\u0259/",
+    "part_of_speech": "noun",
+    "definition": "A sentimental longing or wistful affection for a period in the past.",
+    "example": "Flipping through the yellowed pages filled him with deep nostalgia.",
+    "synonyms": [
+      "reminiscence",
+      "yearning",
+      "wistfulness",
+      "longing"
+    ]
+  },
+  {
+    "word": "ethereal",
+    "phonetic": "/i\u02c8\u03b8\u026a\u0259.ri.\u0259l/",
+    "part_of_speech": "adjective",
+    "definition": "Extremely delicate and light in a way that seems not to be of this world.",
+    "example": "An ethereal melody drifted through the twilight air.",
+    "synonyms": [
+      "delicate",
+      "heavenly",
+      "celestial",
+      "airy"
+    ]
+  },
+  {
+    "word": "aesthetic",
+    "phonetic": "/es\u02c8\u03b8et.\u026ak/",
+    "part_of_speech": "adjective",
+    "definition": "Concerned with beauty or the appreciation of beauty.",
+    "example": "The book was published with remarkable aesthetic care and fine typography.",
+    "synonyms": [
+      "artistic",
+      "tasteful",
+      "beautiful",
+      "graceful"
+    ]
+  },
+  {
+    "word": "enigma",
+    "phonetic": "/\u026a\u02c8n\u026a\u0261.m\u0259/",
+    "part_of_speech": "noun",
+    "definition": "A person or thing that is mysterious or difficult to understand.",
+    "example": "How the thief entered the locked room remained an absolute enigma.",
+    "synonyms": [
+      "mystery",
+      "puzzle",
+      "riddle",
+      "conundrum"
+    ]
+  },
+  {
+    "word": "inquisitive",
+    "phonetic": "/\u026an\u02c8kw\u026az.\u0259.t\u026av/",
+    "part_of_speech": "adjective",
+    "definition": "Having or showing an interest in learning things; curious.",
+    "example": "The young boy was remarkably inquisitive, questioning everything he saw.",
+    "synonyms": [
+      "curious",
+      "inquiring",
+      "probing",
+      "nosy"
+    ]
+  },
+  {
+    "word": "sanctuary",
+    "phonetic": "/\u02c8s\u00e6\u014bk.t\u0283\u028a\u0259.ri/",
+    "part_of_speech": "noun",
+    "definition": "A place of refuge or safety, or a sacred place.",
+    "example": "The quiet library became her personal sanctuary away from noisy city life.",
+    "synonyms": [
+      "haven",
+      "refuge",
+      "shelter",
+      "oasis"
+    ]
+  },
+  {
+    "word": "chronicle",
+    "phonetic": "/\u02c8kr\u0252n.\u026a.k\u0259l/",
+    "part_of_speech": "noun",
+    "definition": "A factual written account of important or historical events in the order of their occurrence.",
+    "example": "This novel is a captivating chronicle of an extraordinary Victorian era.",
+    "synonyms": [
+      "record",
+      "history",
+      "account",
+      "annals"
+    ]
+  },
+  {
+    "word": "audacity",
+    "phonetic": "/\u0254\u02d0\u02c8d\u00e6s.\u0259.ti/",
+    "part_of_speech": "noun",
+    "definition": "A willingness to take bold risks, or rude or disrespectful behavior.",
+    "example": "He had the audacity to challenge the reigning chess champion.",
+    "synonyms": [
+      "boldness",
+      "daring",
+      "temerity",
+      "courage"
+    ]
+  },
+  {
+    "word": "candid",
+    "phonetic": "/\u02c8k\u00e6n.d\u026ad/",
+    "part_of_speech": "adjective",
+    "definition": "Truthful and straightforward; frank.",
+    "example": "His candid feedback helped the young novelist refine her manuscript.",
+    "synonyms": [
+      "frank",
+      "outspoken",
+      "honest",
+      "forthright"
+    ]
+  },
+  {
+    "word": "trepidation",
+    "phonetic": "/\u02cctrep.\u026a\u02c8de\u026a.\u0283\u0259n/",
+    "part_of_speech": "noun",
+    "definition": "A feeling of fear or agitation about something that may happen.",
+    "example": "She opened the ominous letter with considerable trepidation.",
+    "synonyms": [
+      "apprehension",
+      "dread",
+      "fear",
+      "anxiety"
+    ]
+  },
+  {
+    "word": "vivid",
+    "phonetic": "/\u02c8v\u026av.\u026ad/",
+    "part_of_speech": "adjective",
+    "definition": "Producing powerful feelings or strong, clear images in the mind.",
+    "example": "The author painted a vivid depiction of Victorian London under thick fog.",
+    "synonyms": [
+      "graphic",
+      "lifelike",
+      "clear",
+      "striking"
+    ]
+  },
+  {
+    "word": "formidable",
+    "phonetic": "/\u02c8f\u0254\u02d0.m\u026a.d\u0259.b\u0259l/",
+    "part_of_speech": "adjective",
+    "definition": "Inspiring fear or respect through being impressively large, powerful, intense, or capable.",
+    "example": "Professor Moriarty was a formidable adversary for Sherlock Holmes.",
+    "synonyms": [
+      "intimidating",
+      "daunting",
+      "fearsome",
+      "imposing"
+    ]
+  },
+  {
+    "word": "eccentric",
+    "phonetic": "/\u026ak\u02c8sen.tr\u026ak/",
+    "part_of_speech": "adjective",
+    "definition": "Unconventional and slightly strange.",
+    "example": "The eccentric collector owned thousands of rare astronomical charts.",
+    "synonyms": [
+      "unconventional",
+      "quirky",
+      "peculiar",
+      "odd"
+    ]
+  },
+  {
+    "word": "zenith",
+    "phonetic": "/\u02c8zen.\u026a\u03b8/",
+    "part_of_speech": "noun",
+    "definition": "The time at which something is most powerful or successful; peak.",
+    "example": "The British Empire reached the zenith of its territorial expansion.",
+    "synonyms": [
+      "peak",
+      "pinnacle",
+      "apex",
+      "acme",
+      "climax"
+    ]
+  },
+  {
+    "word": "book",
+    "phonetic": "/b\u028ak/",
+    "part_of_speech": "noun",
+    "definition": "A written or printed work consisting of pages bound together along one side and bound in covers.",
+    "example": "She curled up on the armchair with her favorite classic book.",
+    "synonyms": [
+      "volume",
+      "tome",
+      "publication",
+      "novel"
+    ]
+  },
+  {
+    "word": "read",
+    "phonetic": "/ri\u02d0d/",
+    "part_of_speech": "verb",
+    "definition": "Look at and comprehend the meaning of written or printed characters or symbols.",
+    "example": "He loved to read historical fiction before going to sleep.",
+    "synonyms": [
+      "peruse",
+      "scan",
+      "study",
+      "decipher"
+    ]
+  },
+  {
+    "word": "library",
+    "phonetic": "/\u02c8la\u026a.br\u0259r.i/",
+    "part_of_speech": "noun",
+    "definition": "A building or room containing collections of books, periodicals, and sometimes films and recorded music for people to read, borrow, or refer to.",
+    "example": "The grand university library housed millions of historic manuscripts.",
+    "synonyms": [
+      "archive",
+      "bookroom",
+      "collection",
+      "athenaeum"
+    ]
+  },
+  {
+    "word": "knowledge",
+    "phonetic": "/\u02c8n\u0252l.\u026ad\u0292/",
+    "part_of_speech": "noun",
+    "definition": "Facts, information, and skills acquired through experience or education; the theoretical or practical understanding of a subject.",
+    "example": "Knowledge is a flame that illuminates even the darkest corners.",
+    "synonyms": [
+      "wisdom",
+      "understanding",
+      "insight",
+      "erudition"
+    ]
+  },
+  {
+    "word": "wisdom",
+    "phonetic": "/\u02c8w\u026az.d\u0259m/",
+    "part_of_speech": "noun",
+    "definition": "The quality of having experience, knowledge, and good judgment; the quality of being wise.",
+    "example": "With age comes the wisdom to appreciate life's quiet moments.",
+    "synonyms": [
+      "sagacity",
+      "discernment",
+      "insight",
+      "prudence"
+    ]
+  },
+  {
+    "word": "rabbit",
+    "phonetic": "/\u02c8r\u00e6b.\u026at/",
+    "part_of_speech": "noun",
+    "definition": "A burrowing, gregarious, plant-eating mammal with long ears, long hind legs, and a short tail.",
+    "example": "Alice followed the White Rabbit straight down the mysterious hole.",
+    "synonyms": [
+      "hare",
+      "coney",
+      "bunny"
+    ]
+  },
+  {
+    "word": "evidence",
+    "phonetic": "/\u02c8ev.\u026a.d\u0259ns/",
+    "part_of_speech": "noun",
+    "definition": "The available body of facts or information indicating whether a belief or proposition is true or valid.",
+    "example": "There is not a shred of evidence to link the suspect to the crime scene.",
+    "synonyms": [
+      "proof",
+      "testimony",
+      "confirmation",
+      "clues"
+    ]
+  },
+  {
+    "word": "observation",
+    "phonetic": "/\u02cc\u0252b.z\u0259\u02c8ve\u026a.\u0283\u0259n/",
+    "part_of_speech": "noun",
+    "definition": "The action or process of closely observing or monitoring something or someone.",
+    "example": "'You see, but you do not observe,' remarked Sherlock Holmes calmly.",
+    "synonyms": [
+      "scrutiny",
+      "inspection",
+      "monitoring",
+      "notice"
+    ]
+  },
+  {
+    "word": "reasoning",
+    "phonetic": "/\u02c8ri\u02d0.z\u0259n.\u026a\u014b/",
+    "part_of_speech": "noun",
+    "definition": "The action of thinking about something in a logical, sensible way.",
+    "example": "His chain of reasoning was so tight that none could dispute his conclusion.",
+    "synonyms": [
+      "logic",
+      "rationality",
+      "analysis",
+      "thinking"
+    ]
+  },
+  {
+    "word": "mystery",
+    "phonetic": "/\u02c8m\u026as.t\u0259r.i/",
+    "part_of_speech": "noun",
+    "definition": "Something that is difficult or impossible to understand or explain.",
+    "example": "The sudden disappearance of the diamond remained an unsolved mystery.",
+    "synonyms": [
+      "puzzle",
+      "enigma",
+      "riddle",
+      "secret"
+    ]
+  },
+  {
+    "word": "whisper",
+    "phonetic": "/\u02c8w\u026as.p\u0259r/",
+    "part_of_speech": "verb",
+    "definition": "Speak very softly using one's breath without one's vocal cords, especially for the sake of secrecy.",
+    "example": "'Listen closely,' he whispered into the shadowy corridor.",
+    "synonyms": [
+      "murmur",
+      "mutter",
+      "breathe"
+    ]
+  },
+  {
+    "word": "slumber",
+    "phonetic": "/\u02c8sl\u028cm.b\u0259r/",
+    "part_of_speech": "noun",
+    "definition": "A sleep, especially a light or pleasant one.",
+    "example": "She awoke gently from a peaceful afternoon slumber.",
+    "synonyms": [
+      "sleep",
+      "nap",
+      "doze",
+      "rest"
+    ]
+  },
+  {
+    "word": "languid",
+    "phonetic": "/\u02c8l\u00e6\u014b.\u0261w\u026ad/",
+    "part_of_speech": "adjective",
+    "definition": "Displaying or having a disinclination for physical exertion or effort; slow and relaxed.",
+    "example": "The Caterpillar smoked his hookah with a slow, languid gesture.",
+    "synonyms": [
+      "relaxed",
+      "unhurried",
+      "lethargic",
+      "listless"
+    ]
+  },
+  {
+    "word": "insolence",
+    "phonetic": "/\u02c8\u026an.s\u0259l.\u0259ns/",
+    "part_of_speech": "noun",
+    "definition": "Rude and disrespectful behavior.",
+    "example": "The Queen was furious at the insolence of the knave.",
+    "synonyms": [
+      "impertinence",
+      "impudence",
+      "cheek",
+      "rudeness"
+    ]
+  },
+  {
+    "word": "relentless",
+    "phonetic": "/r\u026a\u02c8lent.l\u0259s/",
+    "part_of_speech": "adjective",
+    "definition": "Unceasingly intense, harsh, or inflexible.",
+    "example": "The detective was relentless in his pursuit of truth.",
+    "synonyms": [
+      "persistent",
+      "unyielding",
+      "unstoppable",
+      "dogged"
+    ]
+  },
+  {
+    "word": "astonishing",
+    "phonetic": "/\u0259\u02c8st\u0252n.\u026a.\u0283\u026a\u014b/",
+    "part_of_speech": "adjective",
+    "definition": "Extremely surprising or impressive; amazing.",
+    "example": "It was astonishing how much detail the magnifying lens revealed.",
+    "synonyms": [
+      "amazing",
+      "staggering",
+      "astounding",
+      "remarkable"
+    ]
+  },
+  {
+    "word": "remarkable",
+    "phonetic": "/r\u026a\u02c8m\u0251\u02d0.k\u0259.b\u0259l/",
+    "part_of_speech": "adjective",
+    "definition": "Worthy of attention; striking or extraordinary.",
+    "example": "She possessed a remarkable ability to recall every passage she had ever read.",
+    "synonyms": [
+      "extraordinary",
+      "exceptional",
+      "notable",
+      "outstanding"
+    ]
+  },
+  {
+    "word": "perplex",
+    "phonetic": "/p\u0259\u02c8pleks/",
+    "part_of_speech": "verb",
+    "definition": "Cause someone to feel completely baffled or puzzled.",
+    "example": "The strange symbols on the parchment continued to perplex the scholar.",
+    "synonyms": [
+      "baffle",
+      "mystify",
+      "bewilder",
+      "confuse"
+    ]
+  },
+  {
+    "word": "cunning",
+    "phonetic": "/\u02c8k\u028cn.\u026a\u014b/",
+    "part_of_speech": "adjective",
+    "definition": "Having or showing skill in achieving one's ends by deceit or evasion.",
+    "example": "A cunning criminal leaves no obvious tracks behind.",
+    "synonyms": [
+      "crafty",
+      "wily",
+      "sly",
+      "shrewd"
+    ]
+  },
+  {
+    "word": "subtle",
+    "phonetic": "/\u02c8s\u028ct.\u0259l/",
+    "part_of_speech": "adjective",
+    "definition": "So delicate or precise as to be difficult to analyze or describe.",
+    "example": "There was a subtle change in the tone of her voice that betrayed her nervousness.",
+    "synonyms": [
+      "delicate",
+      "understated",
+      "nuanced",
+      "fine"
+    ]
+  },
+  {
+    "word": "radiant",
+    "phonetic": "/\u02c8re\u026a.di.\u0259nt/",
+    "part_of_speech": "adjective",
+    "definition": "Sending out light; shining or glowing brightly, or showing great joy.",
+    "example": "Her face was radiant with joy upon receiving the good news.",
+    "synonyms": [
+      "glowing",
+      "shining",
+      "effulgent",
+      "beaming"
+    ]
+  },
+  {
+    "word": "harmony",
+    "phonetic": "/\u02c8h\u0251\u02d0.m\u0259.ni/",
+    "part_of_speech": "noun",
+    "definition": "Agreement or concord; the combination of simultaneously sounded musical notes to produce chords.",
+    "example": "The villagers lived in perfect harmony with the surrounding nature.",
+    "synonyms": [
+      "concord",
+      "unity",
+      "balance",
+      "peace"
+    ]
+  },
+  {
+    "word": "tranquil",
+    "phonetic": "/\u02c8tr\u00e6\u014b.kw\u026al/",
+    "part_of_speech": "adjective",
+    "definition": "Free from disturbance; calm and serene.",
+    "example": "The surface of the mountain lake was tranquil under the moonlit sky.",
+    "synonyms": [
+      "peaceful",
+      "serene",
+      "calm",
+      "quiet"
+    ]
+  },
+  {
+    "word": "ominous",
+    "phonetic": "/\u02c8\u0252m.\u026a.n\u0259s/",
+    "part_of_speech": "adjective",
+    "definition": "Giving the worrying impression that something bad is going to happen; threateningly inauspicious.",
+    "example": "Dark ominous clouds gathered above the lonely moor.",
+    "synonyms": [
+      "threatening",
+      "menacing",
+      "foreboding",
+      "sinister"
+    ]
+  },
+  {
+    "word": "incandescent",
+    "phonetic": "/\u02cc\u026an.k\u00e6n\u02c8des.\u0259nt/",
+    "part_of_speech": "adjective",
+    "definition": "Emitting light as a result of being heated; or passionately brilliant.",
+    "example": "The incandescent glow of the hearth warmed the frosty study.",
+    "synonyms": [
+      "glowing",
+      "luminous",
+      "shining",
+      "radiant"
+    ]
+  },
+  {
+    "word": "quintessential",
+    "phonetic": "/\u02cckw\u026an.t\u026a\u02c8sen.\u0283\u0259l/",
+    "part_of_speech": "adjective",
+    "definition": "Representing the most perfect or typical example of a quality or class.",
+    "example": "Sherlock Holmes is the quintessential English detective.",
+    "synonyms": [
+      "archetypal",
+      "exemplary",
+      "classic",
+      "definitive"
+    ]
+  },
+  {
+    "word": "empathy",
+    "phonetic": "/\u02c8em.p\u0259.\u03b8i/",
+    "part_of_speech": "noun",
+    "definition": "The ability to understand and share the feelings of another.",
+    "example": "Great literature cultivates deep empathy by placing readers in other minds.",
+    "synonyms": [
+      "compassion",
+      "sympathy",
+      "understanding",
+      "sensitivity"
+    ]
+  },
+  {
+    "word": "wanderlust",
+    "phonetic": "/\u02c8w\u0252n.d\u0259.l\u028cst/",
+    "part_of_speech": "noun",
+    "definition": "A strong desire to travel and explore the world.",
+    "example": "Her incurable wanderlust led her across six continents.",
+    "synonyms": [
+      "adventurousness",
+      "roving",
+      "restlessness"
+    ]
+  },
+  {
+    "word": "sonorous",
+    "phonetic": "/s\u0259\u02c8n\u0254\u02d0.r\u0259s/",
+    "part_of_speech": "adjective",
+    "definition": "Imposingly deep and full of sound.",
+    "example": "The bell tower chimed with a deep, sonorous reverberation.",
+    "synonyms": [
+      "resonant",
+      "rich",
+      "full-bodied",
+      "booming"
+    ]
+  },
+  {
+    "word": "pristine",
+    "phonetic": "/\u02c8pr\u026as.ti\u02d0n/",
+    "part_of_speech": "adjective",
+    "definition": "In its original condition; unspoiled and clean.",
+    "example": "The century-old first edition was preserved in pristine condition.",
+    "synonyms": [
+      "immaculate",
+      "flawless",
+      "unspoiled",
+      "pure"
+    ]
+  },
+  {
+    "word": "oblivious",
+    "phonetic": "/\u0259\u02c8bl\u026av.i.\u0259s/",
+    "part_of_speech": "adjective",
+    "definition": "Not aware of or concerned about what is happening around oneself.",
+    "example": "He was completely oblivious to the passage of time while immersed in the book.",
+    "synonyms": [
+      "unaware",
+      "unconscious",
+      "heedless",
+      "ignorant"
+    ]
+  },
+  {
+    "word": "catalyst",
+    "phonetic": "/\u02c8k\u00e6t.\u0259l.\u026ast/",
+    "part_of_speech": "noun",
+    "definition": "A person or thing that precipitates an event or change.",
+    "example": "The mysterious letter served as the catalyst for the entire journey.",
+    "synonyms": [
+      "stimulus",
+      "spark",
+      "impetus",
+      "motivation"
+    ]
+  },
+  {
+    "word": "dichotomy",
+    "phonetic": "/da\u026a\u02c8k\u0252t.\u0259.mi/",
+    "part_of_speech": "noun",
+    "definition": "A division or contrast between two things that are or are represented as being opposed or entirely different.",
+    "example": "There is a stark dichotomy between the bustling city and the quiet country.",
+    "synonyms": [
+      "division",
+      "split",
+      "contrast",
+      "polarity"
+    ]
+  }
+]
