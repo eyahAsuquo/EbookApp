@@ -13,3 +13,4 @@ class OnboardingSlide {
     required this.description,
   });
 }
+

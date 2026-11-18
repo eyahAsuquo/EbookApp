@@ -7,6 +7,7 @@ import 'package:ebook_app/controllers/library_controller.dart';
 import 'package:ebook_app/controllers/onboarding_controller.dart';
 import 'package:ebook_app/controllers/reader_controller.dart';
 import 'package:ebook_app/core/theme/app_theme.dart';
+import 'package:ebook_app/models/recent_pdf.dart';
 import 'package:ebook_app/models/word_definition.dart';
 import 'package:ebook_app/views/common_widgets/pepper_button.dart';
 import 'package:ebook_app/views/common_widgets/word_badge.dart';
@@ -47,6 +48,29 @@ void main() {
       final bookmarked = def.copyWith(isBookmarked: true);
       expect(bookmarked.isBookmarked, true);
       expect(bookmarked.word, def.word);
+    });
+  });
+
+  group('RecentPdf Model Tests', () {
+    test('RecentPdf serialization and formatting', () {
+      final now = DateTime.now();
+      final pdf = RecentPdf(
+        id: '123',
+        filePath: '/storage/sample.pdf',
+        fileName: 'sample.pdf',
+        fileSize: 1024 * 1024 * 2,
+        totalPages: 20,
+        lastReadPage: 5,
+        lastOpenedAt: now,
+      );
+
+      final map = pdf.toMap();
+      final restored = RecentPdf.fromMap(map);
+
+      expect(restored.id, '123');
+      expect(restored.fileName, 'sample.pdf');
+      expect(restored.formattedFileSize, '2.0 MB');
+      expect(restored.lastReadPage, 5);
     });
   });
 
@@ -102,7 +126,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Check first slide title
-      expect(find.text('Immersive Offline Reading'), findsOneWidget);
+      expect(find.text('Open & Read Any PDF Document'), findsOneWidget);
       expect(find.text('Next'), findsOneWidget);
       expect(find.text('Skip'), findsOneWidget);
     });

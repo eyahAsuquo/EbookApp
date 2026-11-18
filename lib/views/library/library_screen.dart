@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ebook_app/controllers/library_controller.dart';
-import 'package:ebook_app/controllers/reader_controller.dart';
 import 'package:ebook_app/core/constants/app_colors.dart';
+import 'package:ebook_app/views/common_widgets/pepper_button.dart';
 import 'package:ebook_app/views/dictionary/bookmarks_screen.dart';
 import 'package:ebook_app/views/dictionary/dictionary_search_screen.dart';
-import 'package:ebook_app/views/library/widgets/book_card.dart';
-import 'package:ebook_app/views/reader/reader_screen.dart';
+import 'package:ebook_app/views/library/widgets/recent_pdf_card.dart';
+import 'package:ebook_app/views/reader/pdf_reader_screen.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -20,8 +20,21 @@ class _LibraryScreenState extends State<LibraryScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<LibraryController>().loadBooks();
+      context.read<LibraryController>().loadRecentPdfs();
     });
+  }
+
+  void _pickAndOpenPdf() async {
+    final libraryController = context.read<LibraryController>();
+    final pdf = await libraryController.pickAndOpenPdf();
+
+    if (pdf != null && mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => PdfReaderScreen(pdf: pdf),
+        ),
+      );
+    }
   }
 
   @override
@@ -38,7 +51,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(
-                Icons.menu_book_rounded,
+                Icons.picture_as_pdf_rounded,
                 size: 20,
                 color: AppColors.pepperRed,
               ),
@@ -69,6 +82,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
           const SizedBox(width: 8),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: AppColors.pepperRed,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.folder_open_rounded),
+        label: const Text('Open PDF'),
+        onPressed: _pickAndOpenPdf,
+      ),
       body: Consumer<LibraryController>(
         builder: (context, controller, child) {
           if (controller.isLoading) {
@@ -77,29 +97,63 @@ class _LibraryScreenState extends State<LibraryScreen> {
             );
           }
 
-          if (controller.errorMessage != null) {
+          final recents = controller.recentPdfs;
+
+          if (recents.isEmpty) {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline_rounded, size: 48, color: Colors.redAccent),
-                  const SizedBox(height: 12),
-                  Text(controller.errorMessage!),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => controller.loadBooks(),
-                    child: const Text('Retry'),
-                  ),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 90,
+                      height: 90,
+                      decoration: const BoxDecoration(
+                        color: AppColors.pepperRedSoft,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.picture_as_pdf_rounded,
+                        size: 44,
+                        color: AppColors.pepperRed,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'No PDF Documents Yet',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.4,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Open any PDF from your device storage to start reading. Tap any word inside the document for instant offline definitions and phonetics.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textSecondary,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+                    PepperButton(
+                      label: 'Open PDF from Device',
+                      icon: Icons.folder_open_rounded,
+                      onPressed: _pickAndOpenPdf,
+                    ),
+                  ],
+                ),
               ),
             );
           }
 
-          final books = controller.books;
-
           return CustomScrollView(
             slivers: [
-              // Hero Banner
+              // Banner Card
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -136,7 +190,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: const Text(
-                                  '100% OFFLINE READY',
+                                  '100% OFFLINE DICTIONARY',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 10,
@@ -147,7 +201,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                               ),
                               const SizedBox(height: 10),
                               const Text(
-                                'Tap Any Word to Define',
+                                'Interactive PDF Reader',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
@@ -157,7 +211,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                               ),
                               const SizedBox(height: 6),
                               const Text(
-                                'Read your ebooks with zero distraction and instant dictionary popups.',
+                                'Highlight or tap any word in your PDFs for instant meanings, phonetics, and bookmarks.',
                                 style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 13,
@@ -168,17 +222,14 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: const BoxDecoration(
-                            color: Colors.white12,
-                            shape: BoxShape.circle,
+                        IconButton.filled(
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: AppColors.pepperRed,
                           ),
-                          child: const Icon(
-                            Icons.auto_stories_rounded,
-                            size: 36,
-                            color: Colors.white,
-                          ),
+                          icon: const Icon(Icons.add_rounded, size: 28),
+                          tooltip: 'Open new PDF',
+                          onPressed: _pickAndOpenPdf,
                         ),
                       ],
                     ),
@@ -187,44 +238,71 @@ class _LibraryScreenState extends State<LibraryScreen> {
               ),
 
               // Section Header
-              const SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(18, 12, 18, 8),
-                  child: Text(
-                    'Bookshelf',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                      letterSpacing: -0.3,
-                    ),
+                  padding: const EdgeInsets.fromLTRB(18, 12, 18, 8),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Recently Opened',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
+                          letterSpacing: -0.3,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: AppColors.pepperRedSoft,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          '${recents.length}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.pepperRed,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
 
-              // Books List
+              // Recent PDFs List
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      final book = books[index];
+                      final item = recents[index];
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12),
-                        child: BookCard(
-                          book: book,
+                        child: RecentPdfCard(
+                          pdf: item,
                           onTap: () {
-                            context.read<ReaderController>().openBook(book);
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => const ReaderScreen()),
+                              MaterialPageRoute(
+                                builder: (_) => PdfReaderScreen(pdf: item),
+                              ),
                             );
+                          },
+                          onRemove: () {
+                            controller.removeRecentPdf(item.id);
                           },
                         ),
                       );
                     },
-                    childCount: books.length,
+                    childCount: recents.length,
                   ),
                 ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 80),
               ),
             ],
           );
@@ -233,4 +311,3 @@ class _LibraryScreenState extends State<LibraryScreen> {
     );
   }
 }
-

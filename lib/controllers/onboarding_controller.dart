@@ -12,25 +12,25 @@ class OnboardingController extends ChangeNotifier {
 
   final List<OnboardingSlide> _slides = const [
     OnboardingSlide(
-      icon: Icons.auto_stories_rounded,
-      tag: 'Offline Reading',
-      title: 'Immersive Offline Reading',
+      icon: Icons.picture_as_pdf_rounded,
+      tag: 'PDF Reading',
+      title: 'Open & Read Any PDF Document',
       description:
-          'Enjoy rich stories without interruptions or internet connectivity. Customize fonts, spacing, and eye-friendly sepia and dark themes.',
+          'Open your own PDF books and documents directly from device storage with high-performance vector rendering and reading progress tracking.',
     ),
     OnboardingSlide(
       icon: Icons.touch_app_rounded,
       tag: 'Instant Lookup',
       title: 'Tap-to-Define Inbuilt Dictionary',
       description:
-          'No more context switching between dictionary apps. Simply tap any word inside the ebook for instant phonetics, meanings, and examples.',
+          'No more context switching between dictionary apps. Simply highlight or tap any word inside your PDFs for instant definitions and phonetics.',
     ),
     OnboardingSlide(
       icon: Icons.offline_bolt_rounded,
-      tag: 'Zero Latency',
-      title: 'Local Engine & Vocabulary Bookmarks',
+      tag: '100,000+ Words',
+      title: 'Complete Offline Dictionary Engine',
       description:
-          'The entire dictionary is indexed directly inside your phone. Bookmark intriguing words to build your personal offline vocabulary list.',
+          'Over 100,000 English words are indexed directly on your phone with zero internet dependency. Bookmark words to build your vocabulary list.',
     ),
   ];
 
