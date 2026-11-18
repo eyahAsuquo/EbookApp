@@ -1,17 +1,27 @@
-# ebook_app
+# EbookApp (Mobile & Desktop)
 
-A new Flutter project.
+Offline Flutter E-Reader application with an inbuilt Webster's dictionary (~102,217 indexed definitions), local PDF reader, vocabulary bookmarks, and 3D flip-card study practice.
 
-## Getting Started
+## Repository Structure
 
-This project is a starting point for a Flutter application.
+```
+EbookApp/
+├── Mobile/       # Flutter application tailored for Mobile (Android & iOS)
+└── Desktop/      # Flutter application tailored for Desktop (Windows, macOS, Linux)
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Running Mobile
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+```bash
+cd Mobile
+flutter pub get
+flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Running Desktop
+
+```bash
+cd Desktop
+flutter pub get
+flutter run -d windows
+```
