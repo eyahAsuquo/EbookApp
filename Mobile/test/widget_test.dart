@@ -13,6 +13,7 @@ import 'package:ebook_app/views/common_widgets/pepper_button.dart';
 import 'package:ebook_app/views/common_widgets/word_badge.dart';
 import 'package:ebook_app/views/onboarding/onboarding_screen.dart';
 import 'package:ebook_app/views/dictionary/vocabulary_study_screen.dart';
+import 'package:ebook_app/views/dictionary/dictionary_bottom_sheet.dart';
 
 void main() {
   group('WordDefinition Model Tests', () {
@@ -148,6 +149,44 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Vocabulary Flashcards'), findsOneWidget);
       expect(find.text('No Bookmarked Words'), findsOneWidget);
+    });
+
+    testWidgets('DictionaryBottomSheet displays long definitions without overflow',
+        (WidgetTester tester) async {
+      final longDef = WordDefinition(
+        word: 'design',
+        phonetic: '/dɪˈzaɪn/',
+        partOfSpeech: 'verb & noun',
+        definition: '1. To draw preliminary outline or main features of; to sketch for a pattern or model; to delineate; to trace out; to draw. Dryden. ' * 15,
+        example: 'He designed a remarkable civic structure.',
+        synonyms: ['plan', 'draft', 'sketch', 'project', 'intend'],
+      );
+
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => DictionaryController()),
+          ],
+          child: MaterialApp(
+            home: Scaffold(
+              body: Builder(
+                builder: (context) => ElevatedButton(
+                  onPressed: () => DictionaryBottomSheet.show(context, longDef),
+                  child: const Text('Open Sheet'),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Open Sheet'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('design'), findsOneWidget);
+      expect(find.text('DEFINITION'), findsOneWidget);
+      // No overflow exception thrown!
+      expect(tester.takeException(), isNull);
     });
   });
 }

@@ -305,9 +305,10 @@ class _VocabularyStudyScreenState extends State<VocabularyStudyScreen>
         side: const BorderSide(color: AppColors.pepperRed, width: 1.5),
       ),
       child: Center(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(28),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
