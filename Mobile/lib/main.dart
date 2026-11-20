@@ -51,7 +51,7 @@ class EbookReaderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pepper Ebook Reader',
+      title: 'Pepper Reader',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: Consumer<OnboardingController>(

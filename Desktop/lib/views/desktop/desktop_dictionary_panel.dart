@@ -23,8 +23,11 @@ class DesktopDictionaryPanel extends StatelessWidget {
           width: 360,
           decoration: BoxDecoration(
             color: Colors.white,
-            border: const Border(
-              left: BorderSide(color: AppColors.divider, width: 1),
+            border: Border(
+              left: BorderSide(
+                color: AppColors.pepperRed.withValues(alpha: 0.35),
+                width: 1.5,
+              ),
             ),
             boxShadow: [
               BoxShadow(
@@ -40,8 +43,13 @@ class DesktopDictionaryPanel extends StatelessWidget {
               // Header
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-                decoration: const BoxDecoration(
-                  border: Border(bottom: BorderSide(color: AppColors.divider)),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: AppColors.pepperRed.withValues(alpha: 0.25),
+                      width: 1.5,
+                    ),
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -58,15 +66,18 @@ class DesktopDictionaryPanel extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Text(
-                      'Dictionary Inspector',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                    const Expanded(
+                      child: Text(
+                        'Dictionary Inspector',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                     ),
-                    const Spacer(),
                     if (onClose != null)
                       IconButton(
                         icon: const Icon(Icons.close_rounded, size: 18, color: AppColors.textMuted),

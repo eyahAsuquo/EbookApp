@@ -35,7 +35,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
             actions: [
               if (bookmarks.isNotEmpty)
                 IconButton(
-                  icon: const Icon(Icons.style_rounded, color: AppColors.pepperRed),
+                  icon: const Icon(Icons.style_rounded, color: Colors.white),
                   tooltip: 'Practice Flashcards',
                   onPressed: () {
                     Navigator.of(context).push(

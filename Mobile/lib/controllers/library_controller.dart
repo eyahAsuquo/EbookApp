@@ -28,6 +28,38 @@ class LibraryController extends ChangeNotifier {
     }
   }
 
+  /// Opens a PDF given a local file path (e.g. from an Android View intent)
+  Future<RecentPdf?> openPdfFromPath(String path) async {
+    try {
+      final file = File(path);
+      if (!await file.exists()) return null;
+
+      final length = await file.length();
+      final name = file.uri.pathSegments.isNotEmpty
+          ? file.uri.pathSegments.last
+          : 'document.pdf';
+      final id = path.hashCode.abs().toString();
+
+      final recent = RecentPdf(
+        id: id,
+        filePath: path,
+        fileName: name,
+        fileSize: length,
+        totalPages: 1,
+        lastReadPage: 1,
+        lastOpenedAt: DateTime.now(),
+      );
+
+      await DatabaseService.instance.saveOrUpdateRecentPdf(recent);
+      await loadRecentPdfs();
+      return recent;
+    } catch (e) {
+      _errorMessage = 'Error opening PDF: $e';
+      notifyListeners();
+      return null;
+    }
+  }
+
   /// Opens system file picker for the user to select any PDF on their device
   Future<RecentPdf?> pickAndOpenPdf() async {
     try {

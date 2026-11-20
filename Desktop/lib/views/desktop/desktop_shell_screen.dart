@@ -26,6 +26,7 @@ class _DesktopShellScreenState extends State<DesktopShellScreen> {
   int _selectedIndex = 0;
   RecentPdf? _activePdf;
   bool _isDefaultViewer = false;
+  bool _isReadingMode = false;
 
   @override
   void initState() {
@@ -84,51 +85,67 @@ class _DesktopShellScreenState extends State<DesktopShellScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final hideSidebar = _isReadingMode && _selectedIndex == 1 && _activePdf != null;
+
     return Scaffold(
       body: Row(
         children: [
           // Left Desktop Sidebar
-          Material(
-            color: Colors.white,
-            child: Container(
-              width: 270,
-              decoration: const BoxDecoration(
-                border: Border(right: BorderSide(color: AppColors.divider)),
-              ),
-              child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // App Branding Header
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(18, 24, 18, 20),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.pepperRed,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.picture_as_pdf_rounded,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Pepper Reader',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.textPrimary,
-                                letterSpacing: -0.3,
+          if (!hideSidebar)
+            Material(
+              color: Colors.white,
+              child: Container(
+                width: 270,
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(
+                      color: AppColors.pepperRed.withValues(alpha: 0.25),
+                      width: 1.5,
+                    ),
+                  ),
+                ),
+                child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // App Branding Header
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 24, 18, 20),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(
+                            'assets/images/app_logo.png',
+                            width: 32,
+                            height: 32,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: AppColors.pepperRed,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Icon(
+                                Icons.picture_as_pdf_rounded,
+                                color: Colors.white,
+                                size: 20,
                               ),
                             ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Pepper Reader',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.textPrimary,
+                                  letterSpacing: -0.3,
+                                ),
+                              ),
                             Row(
                               children: [
                                 Container(
@@ -397,8 +414,15 @@ class _DesktopShellScreenState extends State<DesktopShellScreen> {
         if (_activePdf != null) {
           return DesktopPdfReaderView(
             pdf: _activePdf!,
+            isReadingMode: _isReadingMode,
+            onReadingModeChanged: (val) {
+              setState(() {
+                _isReadingMode = val;
+              });
+            },
             onBack: () {
               setState(() {
+                _isReadingMode = false;
                 _selectedIndex = 0;
               });
             },

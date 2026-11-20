@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ebook_app/controllers/library_controller.dart';
 import 'package:ebook_app/core/constants/app_colors.dart';
+import 'package:ebook_app/services/intent_service.dart';
 import 'package:ebook_app/views/common_widgets/pepper_button.dart';
 import 'package:ebook_app/views/dictionary/bookmarks_screen.dart';
 import 'package:ebook_app/views/dictionary/dictionary_search_screen.dart';
@@ -19,9 +20,33 @@ class _LibraryScreenState extends State<LibraryScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       context.read<LibraryController>().loadRecentPdfs();
+
+      // Listen for incoming PDF files when app is already open
+      IntentService.instance.initialize((path) {
+        _openPdfFromPath(path);
+      });
+
+      // Handle PDF that triggered app launch
+      final initialPath = await IntentService.instance.getInitialPdf();
+      if (initialPath != null && initialPath.isNotEmpty && mounted) {
+        _openPdfFromPath(initialPath);
+      }
     });
+  }
+
+  void _openPdfFromPath(String path) async {
+    final libraryController = context.read<LibraryController>();
+    final pdf = await libraryController.openPdfFromPath(path);
+
+    if (pdf != null && mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => PdfReaderScreen(pdf: pdf),
+        ),
+      );
+    }
   }
 
   void _pickAndOpenPdf() async {
@@ -232,6 +257,88 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           onPressed: _pickAndOpenPdf,
                         ),
                       ],
+                    ),
+                  ),
+                ),
+              ),
+
+              // Default PDF App Helper Card
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(14),
+                    onTap: () async {
+                      final messenger = ScaffoldMessenger.of(context);
+                      final opened =
+                          await IntentService.instance.openDefaultAppSettings();
+                      if (!opened && mounted) {
+                        messenger.showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'To make Pepper Reader default: Open any PDF file -> Tap "Open with" -> Select Pepper Reader -> Tap "Always".',
+                            ),
+                            backgroundColor: AppColors.pepperRed,
+                            duration: Duration(seconds: 5),
+                          ),
+                        );
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: AppColors.pepperRed.withValues(alpha: 0.2),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: AppColors.pepperRedSoft,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(
+                              Icons.picture_as_pdf_rounded,
+                              size: 18,
+                              color: AppColors.pepperRed,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          const Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Set as Default PDF Viewer',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                                SizedBox(height: 2),
+                                Text(
+                                  'Tap to manage app defaults or choose "Always" when opening PDFs',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Icon(
+                            Icons.chevron_right_rounded,
+                            size: 18,
+                            color: AppColors.textMuted,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -15,6 +15,15 @@ namespace {
 #ifndef DWMWA_USE_IMMERSIVE_DARK_MODE
 #define DWMWA_USE_IMMERSIVE_DARK_MODE 20
 #endif
+#ifndef DWMWA_BORDER_COLOR
+#define DWMWA_BORDER_COLOR 34
+#endif
+#ifndef DWMWA_CAPTION_COLOR
+#define DWMWA_CAPTION_COLOR 35
+#endif
+#ifndef DWMWA_TEXT_COLOR
+#define DWMWA_TEXT_COLOR 36
+#endif
 
 constexpr const wchar_t kWindowClassName[] = L"FLUTTER_RUNNER_WIN32_WINDOW";
 
@@ -273,6 +282,15 @@ void Win32Window::OnDestroy() {
 }
 
 void Win32Window::UpdateTheme(HWND const window) {
+  // Pepper Red is #C41E3A -> R=0xC4 (196), G=0x1E (30), B=0x3A (58)
+  COLORREF const pepper_red = RGB(196, 30, 58);
+  COLORREF const white_text = RGB(255, 255, 255);
+
+  // Set native Title Bar (Caption Bar), Caption Text, and Window Outline Border
+  DwmSetWindowAttribute(window, DWMWA_CAPTION_COLOR, &pepper_red, sizeof(pepper_red));
+  DwmSetWindowAttribute(window, DWMWA_TEXT_COLOR, &white_text, sizeof(white_text));
+  DwmSetWindowAttribute(window, DWMWA_BORDER_COLOR, &pepper_red, sizeof(pepper_red));
+
   DWORD light_mode;
   DWORD light_mode_size = sizeof(light_mode);
   LSTATUS result = RegGetValue(HKEY_CURRENT_USER, kGetPreferredBrightnessRegKey,

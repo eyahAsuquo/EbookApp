@@ -37,7 +37,7 @@ class _DictionarySearchScreenState extends State<DictionarySearchScreen> {
         title: const Text('Offline Dictionary'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.bookmarks_rounded, color: AppColors.pepperRed),
+            icon: const Icon(Icons.bookmarks_rounded, color: Colors.white),
             tooltip: 'Saved Vocabulary',
             onPressed: () {
               Navigator.of(context).push(
