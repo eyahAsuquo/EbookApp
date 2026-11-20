@@ -42,20 +42,42 @@ class LibraryController extends ChangeNotifier {
       final path = file.path;
       if (path == null || path.isEmpty) return null;
 
+      return await openPdfFromPath(path);
+    } catch (e) {
+      _errorMessage = 'Error picking PDF file: $e';
+      notifyListeners();
+      return null;
+    }
+  }
+
+  /// Opens a PDF directly from a file path (e.g. from command line, double-click in Explorer, or file association)
+  Future<RecentPdf?> openPdfFromPath(String path) async {
+    try {
       final ioFile = File(path);
-      if (!await ioFile.exists()) return null;
+      if (!await ioFile.exists()) {
+        _errorMessage = 'PDF file not found at: $path';
+        notifyListeners();
+        return null;
+      }
 
       final length = await ioFile.length();
-      final name = file.name.isNotEmpty ? file.name : ioFile.uri.pathSegments.last;
+      final name = ioFile.uri.pathSegments.isNotEmpty && ioFile.uri.pathSegments.last.isNotEmpty
+          ? ioFile.uri.pathSegments.last
+          : path.split(Platform.pathSeparator).last;
       final id = path.hashCode.abs().toString();
+
+      // Check if already in recent list to preserve lastReadPage and totalPages
+      final existingIndex = _recentPdfs.indexWhere((p) => p.filePath == path);
+      final initialPage = existingIndex != -1 ? _recentPdfs[existingIndex].lastReadPage : 1;
+      final totalPages = existingIndex != -1 ? _recentPdfs[existingIndex].totalPages : 1;
 
       final recent = RecentPdf(
         id: id,
         filePath: path,
         fileName: name,
         fileSize: length,
-        totalPages: 1, // Will be updated when PDF loads
-        lastReadPage: 1,
+        totalPages: totalPages,
+        lastReadPage: initialPage,
         lastOpenedAt: DateTime.now(),
       );
 
@@ -63,7 +85,7 @@ class LibraryController extends ChangeNotifier {
       await loadRecentPdfs();
       return recent;
     } catch (e) {
-      _errorMessage = 'Error picking PDF file: $e';
+      _errorMessage = 'Error opening PDF: $e';
       notifyListeners();
       return null;
     }

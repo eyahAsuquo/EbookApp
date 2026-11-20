@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:ebook_app_desktop/controllers/library_controller.dart';
 import 'package:ebook_app_desktop/core/constants/app_colors.dart';
 import 'package:ebook_app_desktop/models/recent_pdf.dart';
+import 'package:ebook_app_desktop/services/file_association_service.dart';
 import 'package:ebook_app_desktop/views/desktop/desktop_library_view.dart';
 import 'package:ebook_app_desktop/views/desktop/desktop_pdf_reader_view.dart';
 import 'package:ebook_app_desktop/views/dictionary/bookmarks_screen.dart';
@@ -10,7 +11,12 @@ import 'package:ebook_app_desktop/views/dictionary/dictionary_search_screen.dart
 import 'package:ebook_app_desktop/views/dictionary/vocabulary_study_screen.dart';
 
 class DesktopShellScreen extends StatefulWidget {
-  const DesktopShellScreen({super.key});
+  final String? initialFilePath;
+
+  const DesktopShellScreen({
+    super.key,
+    this.initialFilePath,
+  });
 
   @override
   State<DesktopShellScreen> createState() => _DesktopShellScreenState();
@@ -19,13 +25,54 @@ class DesktopShellScreen extends StatefulWidget {
 class _DesktopShellScreenState extends State<DesktopShellScreen> {
   int _selectedIndex = 0;
   RecentPdf? _activePdf;
+  bool _isDefaultViewer = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<LibraryController>().loadRecentPdfs();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final libraryController = context.read<LibraryController>();
+      await libraryController.loadRecentPdfs();
+
+      // Open initial PDF if passed via command line / file association
+      if (widget.initialFilePath != null && widget.initialFilePath!.isNotEmpty) {
+        final pdf = await libraryController.openPdfFromPath(widget.initialFilePath!);
+        if (pdf != null && mounted) {
+          _openPdf(pdf);
+        }
+      }
+
+      _checkDefaultViewerStatus();
     });
+  }
+
+  Future<void> _checkDefaultViewerStatus() async {
+    final isDefault = await FileAssociationService.instance.isPdfAssociated();
+    if (mounted) {
+      setState(() {
+        _isDefaultViewer = isDefault;
+      });
+    }
+  }
+
+  Future<void> _registerAsDefault() async {
+    final success = await FileAssociationService.instance.registerPdfAssociation();
+    if (mounted) {
+      setState(() {
+        _isDefaultViewer = success;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            success
+              ? 'Pepper Reader is now set as your default PDF viewer!'
+              : 'Could not register file association automatically. You can also right-click any PDF -> Open with -> Choose Pepper Reader.',
+          ),
+          backgroundColor: success ? AppColors.success : AppColors.textPrimary,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    }
   }
 
   void _openPdf(RecentPdf pdf) {
@@ -192,6 +239,59 @@ class _DesktopShellScreenState extends State<DesktopShellScreen> {
                         label: 'Search Dictionary',
                         index: 4,
                       ),
+                    ],
+                  ),
+                ),
+
+                // Default PDF App Association Status Card
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                  decoration: BoxDecoration(
+                    color: _isDefaultViewer ? AppColors.success.withValues(alpha: 0.08) : AppColors.background,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: _isDefaultViewer ? AppColors.success.withValues(alpha: 0.3) : AppColors.divider,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        _isDefaultViewer ? Icons.check_circle_rounded : Icons.picture_as_pdf_outlined,
+                        size: 16,
+                        color: _isDefaultViewer ? AppColors.success : AppColors.textSecondary,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          _isDefaultViewer ? 'Default PDF App' : 'Set Default App',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: _isDefaultViewer ? AppColors.success : AppColors.textPrimary,
+                          ),
+                        ),
+                      ),
+                      if (!_isDefaultViewer)
+                        InkWell(
+                          borderRadius: BorderRadius.circular(6),
+                          onTap: _registerAsDefault,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: AppColors.pepperRed,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'Set',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
