@@ -30,6 +30,7 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
   bool _isReady = false;
   bool _isReadingMode = false;
   bool _showReadingModeMenus = false;
+  bool _hasSelectedText = false;
 
   @override
   void initState() {
@@ -216,21 +217,56 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
                     );
               },
               onPageChanged: _onPageChanged,
+              textSelectionParams: PdfTextSelectionParams(
+                onTextSelectionChange: (textSelection) async {
+                  _hasSelectedText = textSelection.hasSelectedText;
+                  if (textSelection.hasSelectedText) {
+                    final selected = await textSelection.getSelectedText();
+                    final clean = selected.trim();
+                    if (clean.isNotEmpty) {
+                      _handleDefineWord(clean);
+                    }
+                  }
+                },
+              ),
               onGeneralTap: (context, controller, details) {
+                final hasSelection = _hasSelectedText ||
+                    (_isReady &&
+                        _pdfController.textSelectionDelegate.hasSelectedText);
+
                 if (!_isReadingMode) {
-                  if (details.type == PdfViewerGeneralTapType.tap) {
-                    _enterReadingMode();
+                  if (hasSelection) {
+                    _hasSelectedText = false;
+                    _pdfController.textSelectionDelegate.clearTextSelection();
                     return true;
+                  } else {
+                    if (details.type == PdfViewerGeneralTapType.tap) {
+                      _enterReadingMode();
+                      return true;
+                    }
                   }
                 } else {
-                  if (details.type == PdfViewerGeneralTapType.doubleTap) {
-                    _exitReadingMode();
-                    return true;
-                  } else if (details.type == PdfViewerGeneralTapType.tap) {
-                    setState(() {
-                      _showReadingModeMenus = !_showReadingModeMenus;
-                    });
-                    return true;
+                  if (hasSelection) {
+                    if (details.type == PdfViewerGeneralTapType.doubleTap) {
+                      _hasSelectedText = false;
+                      _pdfController.textSelectionDelegate.clearTextSelection();
+                      _exitReadingMode();
+                      return true;
+                    } else if (details.type == PdfViewerGeneralTapType.tap) {
+                      _hasSelectedText = false;
+                      _pdfController.textSelectionDelegate.clearTextSelection();
+                      return true;
+                    }
+                  } else {
+                    if (details.type == PdfViewerGeneralTapType.doubleTap) {
+                      _exitReadingMode();
+                      return true;
+                    } else if (details.type == PdfViewerGeneralTapType.tap) {
+                      setState(() {
+                        _showReadingModeMenus = !_showReadingModeMenus;
+                      });
+                      return true;
+                    }
                   }
                 }
                 return false;

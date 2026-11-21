@@ -99,7 +99,15 @@ class MainActivity : FlutterActivity() {
 
     private fun openDefaultAppSettings(): Boolean {
         return try {
-            val intent = Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
+            val intent = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                Intent(android.provider.Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS).apply {
+                    data = Uri.parse("package:$packageName")
+                }
+            } else {
+                Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", packageName, null)
+                }
+            }
             startActivity(intent)
             true
         } catch (e: Exception) {

@@ -14,6 +14,7 @@ class DesktopPdfReaderView extends StatefulWidget {
   final VoidCallback onBack;
   final bool isReadingMode;
   final ValueChanged<bool> onReadingModeChanged;
+  final ValueChanged<RecentPdf>? onOpenPdf;
 
   const DesktopPdfReaderView({
     super.key,
@@ -21,6 +22,7 @@ class DesktopPdfReaderView extends StatefulWidget {
     required this.onBack,
     required this.isReadingMode,
     required this.onReadingModeChanged,
+    this.onOpenPdf,
   });
 
   @override
@@ -31,8 +33,11 @@ class _DesktopPdfReaderViewState extends State<DesktopPdfReaderView> {
   late final PdfViewerController _pdfController;
   int _currentPage = 1;
   int _totalPages = 1;
+  bool _isReady = false;
   bool _isPanelOpen = true;
   bool _showReadingModeMenus = false;
+  bool _isReadingModeInspectorOpen = false;
+  bool _hasSelectedText = false;
   final FocusNode _keyboardFocusNode = FocusNode();
 
   @override
@@ -66,10 +71,18 @@ class _DesktopPdfReaderViewState extends State<DesktopPdfReaderView> {
     final cleanWord = rawText.trim().replaceAll(RegExp(r'[^\w\s-]'), '');
     if (cleanWord.isEmpty) return;
 
-    if (!_isPanelOpen) {
-      setState(() {
-        _isPanelOpen = true;
-      });
+    if (!widget.isReadingMode) {
+      if (!_isPanelOpen) {
+        setState(() {
+          _isPanelOpen = true;
+        });
+      }
+    } else {
+      if (!_isReadingModeInspectorOpen) {
+        setState(() {
+          _isReadingModeInspectorOpen = true;
+        });
+      }
     }
 
     await context.read<DictionaryController>().lookupWord(cleanWord);
@@ -77,6 +90,17 @@ class _DesktopPdfReaderViewState extends State<DesktopPdfReaderView> {
 
   void _handleKeyEvent(KeyEvent event) {
     if (event is KeyDownEvent) {
+      final isCtrlOrCmd = HardwareKeyboard.instance.isControlPressed ||
+          HardwareKeyboard.instance.isMetaPressed;
+      if (isCtrlOrCmd && event.logicalKey == LogicalKeyboardKey.keyO) {
+        context.read<LibraryController>().pickAndOpenPdf().then((picked) {
+          if (picked != null && mounted) {
+            widget.onOpenPdf?.call(picked);
+          }
+        });
+        return;
+      }
+
       if (event.logicalKey == LogicalKeyboardKey.arrowRight ||
           event.logicalKey == LogicalKeyboardKey.pageDown) {
         if (_currentPage < _totalPages) {
@@ -90,7 +114,15 @@ class _DesktopPdfReaderViewState extends State<DesktopPdfReaderView> {
       } else if (event.logicalKey == LogicalKeyboardKey.escape ||
           event.logicalKey == LogicalKeyboardKey.f11) {
         if (widget.isReadingMode) {
-          widget.onReadingModeChanged(false);
+          if (_hasSelectedText || _isReadingModeInspectorOpen) {
+            _hasSelectedText = false;
+            _pdfController.textSelectionDelegate.clearTextSelection();
+            setState(() {
+              _isReadingModeInspectorOpen = false;
+            });
+          } else {
+            widget.onReadingModeChanged(false);
+          }
         } else if (_isPanelOpen) {
           setState(() {
             _isPanelOpen = false;
@@ -272,6 +304,7 @@ class _DesktopPdfReaderViewState extends State<DesktopPdfReaderView> {
                           onViewerReady: (doc, controller) {
                             setState(() {
                               _totalPages = doc.pages.length;
+                              _isReady = true;
                             });
                             context.read<LibraryController>().updatePdfProgress(
                                   widget.pdf.id,
@@ -280,21 +313,81 @@ class _DesktopPdfReaderViewState extends State<DesktopPdfReaderView> {
                                 );
                           },
                           onPageChanged: _onPageChanged,
+                          textSelectionParams: PdfTextSelectionParams(
+                            onTextSelectionChange: (textSelection) async {
+                              final hasText = textSelection.hasSelectedText;
+                              _hasSelectedText = hasText;
+                              if (hasText) {
+                                final selected =
+                                    await textSelection.getSelectedText();
+                                final clean = selected.trim();
+                                if (clean.isNotEmpty) {
+                                  _defineWord(clean);
+                                }
+                              } else {
+                                if (widget.isReadingMode &&
+                                    _isReadingModeInspectorOpen) {
+                                  setState(() {
+                                    _isReadingModeInspectorOpen = false;
+                                  });
+                                }
+                              }
+                            },
+                          ),
                           onGeneralTap: (context, controller, details) {
+                            final hasSelection = _hasSelectedText ||
+                                (_isReady &&
+                                    _pdfController
+                                        .textSelectionDelegate.hasSelectedText);
+
                             if (!widget.isReadingMode) {
-                              if (details.type == PdfViewerGeneralTapType.tap) {
-                                widget.onReadingModeChanged(true);
+                              if (hasSelection) {
+                                _hasSelectedText = false;
+                                _pdfController.textSelectionDelegate
+                                    .clearTextSelection();
                                 return true;
+                              } else {
+                                if (details.type ==
+                                    PdfViewerGeneralTapType.tap) {
+                                  widget.onReadingModeChanged(true);
+                                  return true;
+                                }
                               }
                             } else {
-                              if (details.type == PdfViewerGeneralTapType.doubleTap) {
-                                widget.onReadingModeChanged(false);
-                                return true;
-                              } else if (details.type == PdfViewerGeneralTapType.tap) {
-                                setState(() {
-                                  _showReadingModeMenus = !_showReadingModeMenus;
-                                });
-                                return true;
+                              if (hasSelection) {
+                                if (details.type ==
+                                    PdfViewerGeneralTapType.doubleTap) {
+                                  _hasSelectedText = false;
+                                  _pdfController.textSelectionDelegate
+                                    .clearTextSelection();
+                                  setState(() {
+                                    _isReadingModeInspectorOpen = false;
+                                  });
+                                  widget.onReadingModeChanged(false);
+                                  return true;
+                                } else if (details.type ==
+                                    PdfViewerGeneralTapType.tap) {
+                                  _hasSelectedText = false;
+                                  _pdfController.textSelectionDelegate
+                                    .clearTextSelection();
+                                  setState(() {
+                                    _isReadingModeInspectorOpen = false;
+                                  });
+                                  return true;
+                                }
+                              } else {
+                                if (details.type ==
+                                    PdfViewerGeneralTapType.doubleTap) {
+                                  widget.onReadingModeChanged(false);
+                                  return true;
+                                } else if (details.type ==
+                                    PdfViewerGeneralTapType.tap) {
+                                  setState(() {
+                                    _showReadingModeMenus =
+                                        !_showReadingModeMenus;
+                                  });
+                                  return true;
+                                }
                               }
                             }
                             return false;
@@ -441,6 +534,44 @@ class _DesktopPdfReaderViewState extends State<DesktopPdfReaderView> {
               ),
             ),
           ],
+
+          // Reading Mode: Sliding Dictionary Inspector Pane from right
+          if (widget.isReadingMode)
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 280),
+              curve: Curves.easeOutCubic,
+              top: 0,
+              bottom: 0,
+              right: _isReadingModeInspectorOpen ? 0 : -370,
+              width: 360,
+              child: Material(
+                elevation: 16,
+                color: Colors.white,
+                borderRadius: const BorderRadius.horizontal(
+                  left: Radius.circular(16),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        color: AppColors.pepperRed,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                  child: DesktopDictionaryPanel(
+                    onClose: () {
+                      setState(() {
+                        _isReadingModeInspectorOpen = false;
+                      });
+                      _hasSelectedText = false;
+                      _pdfController.textSelectionDelegate.clearTextSelection();
+                    },
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

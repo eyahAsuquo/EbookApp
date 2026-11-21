@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:ebook_app_desktop/controllers/library_controller.dart';
 import 'package:ebook_app_desktop/core/constants/app_colors.dart';
@@ -83,12 +84,26 @@ class _DesktopShellScreenState extends State<DesktopShellScreen> {
     });
   }
 
+  void _pickAndOpenPdf() async {
+    final pdf = await context.read<LibraryController>().pickAndOpenPdf();
+    if (pdf != null && mounted) {
+      _openPdf(pdf);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final hideSidebar = _isReadingMode && _selectedIndex == 1 && _activePdf != null;
 
-    return Scaffold(
-      body: Row(
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.keyO, control: true): _pickAndOpenPdf,
+        const SingleActivator(LogicalKeyboardKey.keyO, meta: true): _pickAndOpenPdf,
+      },
+      child: Focus(
+        autofocus: true,
+        child: Scaffold(
+          body: Row(
         children: [
           // Left Desktop Sidebar
           if (!hideSidebar)
@@ -198,12 +213,7 @@ class _DesktopShellScreenState extends State<DesktopShellScreen> {
                         'Open PDF (Ctrl+O)',
                         style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
                       ),
-                      onPressed: () async {
-                        final pdf = await context.read<LibraryController>().pickAndOpenPdf();
-                        if (pdf != null) {
-                          _openPdf(pdf);
-                        }
-                      },
+                      onPressed: _pickAndOpenPdf,
                     ),
                   ),
                 ),
@@ -355,6 +365,8 @@ class _DesktopShellScreenState extends State<DesktopShellScreen> {
           ),
         ],
       ),
+    ),
+    ),
     );
   }
 
@@ -426,6 +438,7 @@ class _DesktopShellScreenState extends State<DesktopShellScreen> {
                 _selectedIndex = 0;
               });
             },
+            onOpenPdf: _openPdf,
           );
         }
         return DesktopLibraryView(onOpenPdf: _openPdf);
